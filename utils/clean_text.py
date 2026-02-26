@@ -6,12 +6,10 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from spellchecker import SpellChecker
 
-# Initialize globals
 spell = SpellChecker()
 lemmatizer = WordNetLemmatizer()
 stop_words = set(stopwords.words('english'))
 
-# Make sure 'slang.json' is in the same directory, or update the path
 with open('slang.json', 'r') as f:
     slang_words = json.load(f)
 

@@ -16,7 +16,7 @@ class MultinomialNB():
         self.results = {}
 
     def input_df(self, X, y):
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
         self.X_train = np.array(X_train) 
         self.y_train = np.array(y_train)
         self.X_test = np.array(X_test)
@@ -31,17 +31,22 @@ class MultinomialNB():
         total_words = {}
         self.vocab = []
         
+        #get labels/classes
         self.labels = np.unique(self.y_train)
         
+        #seperate text by class
         for label in self.labels:
             ind[label] = np.where(self.y_train == label)[0]
             texts[label] = self.X_train[ind[label]]
 
+
         for label in self.labels:
             word_counts[label] = {}
-            loglikelihood[label] = {}
+            #cal log prior
             logprior[label] = math.log(len(ind[label]) / len(self.y_train))
 
+            #sum word count in each class
+            #collect vocab
             for text in texts[label]:
                 words = text.split() 
                 for word in words:
@@ -53,6 +58,7 @@ class MultinomialNB():
         self.vocab = np.unique(self.vocab)
         vocab_size = len(self.vocab)
 
+        #cal likelihood
         for label in self.labels:
             loglikelihood[label] = {}
             for word in self.vocab:
@@ -67,6 +73,8 @@ class MultinomialNB():
             
         sum_prob = {}
         post_prob = {}
+
+        #cal post prob each class
         for label in self.labels:
             sum_prob[label] = self.logprior[label]
             for word in test_words:
@@ -75,6 +83,7 @@ class MultinomialNB():
                         
             post_prob[label] = sum_prob[label]
 
+        #prediction = max prob
         value = max(list(post_prob.values()))
         for key, val in post_prob.items():
             if val == value:
@@ -106,6 +115,8 @@ class MultinomialNB():
     def get_features(self):
         likelihood = {}
         max_val = {}
+        #get top 3 most prob word of each class
+        ####todo get most diff prob instead
         for label in self.labels:
             likelihood[label] = list(self.loglikelihood[label].values())
             max_val[label] = {}
