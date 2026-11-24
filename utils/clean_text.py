@@ -33,6 +33,16 @@ class CleanText():
                 punc.append(ch)
         self.text = "".join(punc)
 
+    def flag_emoticon(self):
+        #emoticons carry tone, keep them as tokens before punctuation is removed
+        emoticons = {";)": "_wink", ";-)": "_wink", "😉": "_wink",
+                     ":)": "_smile", ":-)": "_smile", "😊": "_smile",
+                     ":p": "_tongue", ":d": "_laugh", "😂": "_laugh",
+                     "<3": "_heart", "❤": "_heart", "😍": "_heart", "🥰": "_heart",
+                     ":*": "_kiss", "😘": "_kiss", "😏": "_smirk"}
+        for emo, token in emoticons.items():
+            self.text = self.text.replace(emo, f" {token} ")
+
     def flag_elongate(self):
         if not self.text: return self.text
         result = []
