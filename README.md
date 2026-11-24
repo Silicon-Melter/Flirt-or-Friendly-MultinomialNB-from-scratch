@@ -2,6 +2,13 @@
 
 A text classifier that tells flirty chat messages (label 1) from friendly ones (label 0). The Naive Bayes model (log priors, Laplace-smoothed log likelihoods, prediction by the larger log posterior) is written from scratch with NumPy in `utils/classifier.py`. Course project for 01416305 Artificial Intelligence Technology, KMITL.
 
+## Dataset
+`data.csv` is the "Flirty or Not" dataset from IE University, about 5,000 short messages labelled flirty or friendly:
+- Hugging Face: [ieuniversity/flirty_or_not](https://huggingface.co/datasets/ieuniversity/flirty_or_not)
+- Reference project: [alyssafrndz/Flirtation-analysis](https://github.com/alyssafrndz/Flirtation-analysis)
+
+Credit for collecting and labelling the data goes to its authors. This repo only adds the classifier and the cleaning experiments.
+
 ## Pipeline
 1. `utils/handle_csv.py`: drop empty rows and duplicate texts, then balance the classes by dropping friendly messages at random (1,055 of each).
 2. `main.py` `apply_clean`: lower case, expand contractions, flag emoticons, remove punctuation, join negations (`NOT_cute`), flag elongated words (`heyyy` → `hey _elongated`), translate slang (`slang.json`), lemmatise verbs.
